@@ -8,12 +8,13 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-// The fail: a routine school-run text where autocorrect swaps one letter's
-// worth of meaning — "soccer" becomes "Satan" — and the fallout (a wife
-// gone silent) sells that the slip really went out. The wrong word is
-// specific, surprising, and instantly visual.
+// The fail: a routine school-run text sent to the whole class group chat,
+// where autocorrect swaps one word — "soccer" becomes "Satan" — and the
+// fallout (three moms blocking the sender) sells that the slip really went
+// out to real people. The wrong word is specific, surprising, and instantly
+// visual, and the group-chat setting raises the stakes over a 1-to-1 text.
 const ENTRY =
-  "I texted my wife 'picking the kids up from soccer practice' — autocorrect sent 'picking the kids up from Satan practice' and now she won't answer my calls.";
+  "I texted the school group chat 'picking the kids up from soccer' — autocorrect sent 'picking the kids up from Satan' and now three moms have blocked me.";
 
 function validate(text: string): void {
   if (text.length < 1 || text.length > 199) {
@@ -27,6 +28,16 @@ function validate(text: string): void {
   }
   if (text !== text.trim()) {
     throw new Error("gate: entry must not have leading or trailing whitespace");
+  }
+  // No control characters: the entry must be plain readable text.
+  // eslint-disable-next-line no-control-regex
+  if (/[\u0000-\u001F\u007F]/.test(text)) {
+    throw new Error("gate: entry must not contain control characters");
+  }
+  // Must survive a UTF-8 round trip unchanged, so the scorer reads exactly
+  // what was validated here.
+  if (Buffer.from(text, "utf8").toString("utf8") !== text) {
+    throw new Error("gate: entry must be valid UTF-8 text");
   }
 }
 

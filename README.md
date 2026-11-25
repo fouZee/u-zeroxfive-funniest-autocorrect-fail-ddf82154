@@ -16,7 +16,7 @@ The program writes the one-line autocorrect fail to `/output/entry.txt` (or `$OU
 
 ## The entry
 
-> I texted my wife 'picking the kids up from soccer practice' — autocorrect sent 'picking the kids up from Satan practice' and now she won't answer my calls.
+> I texted the school group chat 'picking the kids up from soccer' — autocorrect sent 'picking the kids up from Satan' and now three moms have blocked me.
 
 ---
 
